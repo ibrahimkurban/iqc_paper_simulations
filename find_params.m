@@ -46,5 +46,5 @@ end
 
 param.alpha = alpha;
 param.beta  = beta;
-param.rho2   = rho;
+param.rho   = rho;
 end
