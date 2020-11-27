@@ -6,12 +6,12 @@ function LMI = iqc_lmi_2(P,r2,lam1, lam2, G,psi)
 % LMI = iqc_lmi_2(P,r2,lam1, lam2, G,psi)
 %
 
-Gh  = G_interconect(G, psi);
+Gh  = G_interconnect(G, psi);
 
-Z1  = zeros(size(Gh.B,1));
-Z2  = zeros(size(Gh.B,1),1);
+Z1  = zeros(size(Gh.B,2));
+Z2  = zeros(size(Gh.D,1),1);
 M   = [0 1;1 0];
-LMI = [Ah Bh]'*P*[Ah Bh] - r2*blkdiag(P, Z1)...
-      + lam2*[Ch Dh]'*M*[Ch Dh]...
-      + lam1*[psi.Dy*G.C, Z2, Dh]'*M*[psi.Dy*G.C, Z2, Dh];
+LMI = [Gh.A Gh.B]'*P*[Gh.A Gh.B] - r2*blkdiag(P, Z1)...
+      + lam2*[Gh.C Gh.D]'*M*[Gh.C Gh.D]...
+      + lam1*[psi.Dy*G.C, Z2, Gh.D]'*M*[psi.Dy*G.C, Z2, Gh.D];
 end

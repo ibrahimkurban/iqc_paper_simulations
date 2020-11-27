@@ -10,7 +10,7 @@ function [r2, P] = bisection_cvx(iqc_type, G,psi,tol)
 %
 %
 %size of the problem
-n    = size(G_interconnect(G,psi),1);
+n    = size(G_interconnect(G,psi(1)).A,1);
 
 %bisection interval
 r2_h = 2;
@@ -24,7 +24,7 @@ while(r2_h - r2_l>tol)
             lam = 1; % homogenity
             cvx_begin sdp quiet
                 variable P(n,n) semidefinite
-                lmi = iqc_lmi_1(P,r2,lam, G,psi);
+                lmi = iqc_lmi_1(P,r2,lam, G,psi(r2));
                 minimize 0
                 subject to
                 lmi <= 0;
@@ -34,7 +34,7 @@ while(r2_h - r2_l>tol)
                 variable P(n,n) semidefinite
                 variable lam1 nonnegative
                 variable lam2 nonnegative
-                lmi = iqc_lmi_2(P,r2,lam1, lam2,G,psi);
+                lmi = iqc_lmi_2(P,r2,lam1, lam2,G,psi(1));
                 minimize 0
                 subject to
                 lmi <= 0;

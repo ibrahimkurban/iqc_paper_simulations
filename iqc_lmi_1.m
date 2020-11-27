@@ -5,10 +5,10 @@ function LMI = iqc_lmi_1(P,r2,lam, G,psi)
 %
 % LMI = iqc_lmi_1(P,r2,lam,G,psi)
 %
-Gh  = G_interconect(G, psi);
+Gh  = G_interconnect(G, psi);
 
-Z1  = zeros(size(Gh.B,1));
+Z1  = zeros(size(Gh.B,2));
 M   = [0 1;1 0];
 LMI = [Gh.A Gh.B]'*P*[Gh.A Gh.B] - r2*blkdiag(P, Z1)...
-        + lam*[Ch Dh]'*M*[Ch Dh];
+        + lam*[Gh.C Gh.D]'*M*[Gh.C Gh.D];
 end
