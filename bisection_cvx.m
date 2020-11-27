@@ -1,8 +1,8 @@
-function [r2, P] = bisection_cvx(iqc_type, G,psi,tol)
+function [r2, P] = bisection_cvx(iqc_type, G,psi,tol,delta)
 %%BISECTION_CVX
 % solves the LMI given in
 % iqc_type: 'naive'         formulation in 3.9 of Theorem 4
-%            anything       formulation in remark 11 of Lemma 10 pg 73   
+%            anything       formulation in remark 11 of Lemma 10 pg 73
 % by using bisection method
 %
 % [r2, P] = bisection_cvx(iqc_type, G,psi,tol)
@@ -23,24 +23,35 @@ while(r2_h - r2_l>tol)
         case 'naive'
             lam = 1; % homogenity
             cvx_begin sdp quiet
-                variable P(n,n) semidefinite
-                lmi = iqc_lmi_1(P,r2,lam, G,psi(r2));
-                minimize 0
-                subject to
-                lmi <= 0;
-             cvx_end
+            variable P(n,n) semidefinite
+            lmi = iqc_lmi_1(P,r2,lam, G,psi(r2));
+            minimize 0
+            subject to
+            lmi <= 0;
+            cvx_end
+        case 'noise'
+            cvx_begin sdp quiet
+            variable P(n,n) semidefinite
+            variable lam1 nonnegative
+            variable lam2 nonnegative
+            lmi = iqc_lmi_3(P,r2,lam1, lam2, G,psi(r2), delta);
+            minimize 0
+            subject to
+            lmi <= 0;
+            lam1 + lam2 == 1; %homogenity
+            cvx_end
         otherwise
             cvx_begin sdp quiet
-                variable P(n,n) semidefinite
-                variable lam1 nonnegative
-                variable lam2 nonnegative
-                lmi = iqc_lmi_2(P,r2,lam1, lam2,G,psi(1));
-                minimize 0
-                subject to
-                lmi <= 0;
-                lam1 + lam2 == 1; %homogenity
-                lam2 <= r2*(lam1+lam2);
-             cvx_end
+            variable P(n,n) semidefinite
+            variable lam1 nonnegative
+            variable lam2 nonnegative
+            lmi = iqc_lmi_2(P,r2,lam1, lam2,G,psi(1));
+            minimize 0
+            subject to
+            lmi <= 0;
+            lam1 + lam2 == 1; %homogenity
+            lam2 <= r2*(lam1+lam2);
+            cvx_end
     end
     %% bisection interval update
     switch cvx_status
@@ -50,4 +61,3 @@ while(r2_h - r2_l>tol)
             r2_l = r2;
     end
 end
-     
