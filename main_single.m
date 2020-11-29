@@ -1,12 +1,12 @@
 
-clear all
-close all
-clc
+% clear all
+% close all
+% clc
 %%
-delta = 0.05; % noise
+delta = 0.2; % noise
 tol     = 1e-2;
-kappas  = 1e1; logspace(1e-4, 5, 100);
-method  = 'gd_opt'; 'nag_std';
+kappas  = 17; logspace(1e-4, 5, 100);
+method  = 'hbm_opt';
 
 % smoothnes and strong-cvx parameters
 L   = 1;
@@ -22,5 +22,6 @@ G   = getG(params,method);
 psi = @(r2b)(weighted_iqc(m,L,r2b));
 
 % solve the lmi
-r_1  = sqrt(bisection_cvx('noise', G,psi,tol, delta));
-r_2  = sqrt(bisection_cvx('noise naive', G,psi,tol, delta));
+r_1  = sqrt(bisection_cvx('other', G,psi,tol, delta));
+% r_2  = sqrt(bisection_cvx('noise naive', G,psi,tol, delta));
+r_1

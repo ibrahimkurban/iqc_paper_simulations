@@ -12,7 +12,8 @@ function [r2, P] = bisection_cvx(iqc_type, G,psi,tol,delta)
 %
 %
 %size of the problem
-n    = size(G_interconnect(G,psi(1)).A,1);
+GG   = G_interconnect(G,psi(1));
+n    = size(GG.A,1);
 
 %bisection interval
 r2_h = 2;
@@ -33,7 +34,6 @@ while(r2_h - r2_l>tol)
             cvx_end
         case 'noise naive'
             cvx_begin quiet
-                cvx_solver mosek
                 variable P(n,n) semidefinite
                 variable lam2 nonnegative
                 lmi = iqc_lmi_4(P,r2,lam, lam2, G,psi(r2), delta);
@@ -46,7 +46,7 @@ while(r2_h - r2_l>tol)
                 variable P(n,n) semidefinite
                 variable lam0 nonnegative
                 variable lam2 nonnegative
-                lmi = iqc_lmi_3(P,r2,lam0, lam, lam2, G,psi(r2), delta);
+                lmi = iqc_lmi_3(P,r2,lam0, lam, lam2, G,psi(1), delta);
                 minimize 0
                 subject to
                 lmi <= 0;
