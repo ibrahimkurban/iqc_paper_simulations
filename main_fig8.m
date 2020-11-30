@@ -31,7 +31,7 @@ rho_gd_cvx  = zeros(N,1);
 rho_gd_quad = zeros(N,1);
 
 for i=1:N
-    i
+    
     % Smoothness and strong-cvx parameters
     L   = 1;
     m   = L/kappas(i);
