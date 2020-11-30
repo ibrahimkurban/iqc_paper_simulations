@@ -68,16 +68,17 @@ end
 
 %% Plot the figure
 figure;
-semilogx(kappas, sqrt(r2_1), 'linewidth', 2); hold on
-semilogx(kappas, sqrt(r2_2), 'linewidth', 2);
+% semilogx(kappas, sqrt(r2_1), 'linewidth', 2);
+semilogx(kappas, sqrt(r2_2), 'linewidth', 2); hold on
 semilogx(kappas, rho_gd_cvx, 'linewidth', 2);
 semilogx(kappas, rho_opt, 'linewidth', 2);
+semilogx(kappas, ones(size(kappas)), 'k--', 'linewidth', 1);
+ylim([0 1.1])
 grid on
 xlabel('Condition ratio L/m')
 ylabel('Convergence rate $\rho$')
-set(findall(gcf,'-property','FontSize'),'FontSize',14)
-legend({'LMI (weighted off-by-one cons)',...
-    'LMI (weighted off-by-one less cons)',...
+set(findall(gcf,'-property','FontSize'),'FontSize',18)
+legend({'HBM optimized rate using grid search',...
     'Gradient rate with $\alpha=\frac{1}{L}$',...
     'Theoretical lower bound'})
 
