@@ -50,12 +50,13 @@ end
 %% Plot the figure
 legendstr = cell(1,Nd+1);
 for j=1:Nd
-    legendstr{j} = ['Gradient rate for $\delta$=' num2str(deltas(j)) ', $\alpha=\frac{2}{L+m}$']; 
+    legendstr{j} = ['Rate for $\delta$=' num2str(deltas(j))]; 
 end
-legendstr{Nd+1}  = 'Noise-free Gradient rate, $\alpha=\frac{2}{L+m}$';
+legendstr{Nd+1}  = 'Noise-free Gradient rate';
 
 figure;
-semilogx(kappas, r', 'linewidth', 2); hold on;
+semilogx(kappas, r(:,1:Nd)', 'linewidth', 2); hold on;
+semilogx(kappas, r(:,Nd+1)', 'k-.', 'linewidth', 2);
 semilogx(kappas, ones(size(kappas)), 'k--', 'linewidth', 1);
 ylim([0 1.1])
 grid on

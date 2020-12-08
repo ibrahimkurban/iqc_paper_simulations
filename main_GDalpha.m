@@ -25,6 +25,8 @@ Nr      = numel(rhos); %number of rhos
 % allocation
 alpha_min   = zeros(N,Nr);
 alpha_max   = zeros(N,Nr);
+rho_opt     = zeros(N,1);
+alpha_opt   = zeros(N,1);
 
 for i=1:N
 
@@ -32,19 +34,23 @@ for i=1:N
     L   = 1;
     m   = L/kappas(i);
         
-    % GD LMI for each given rate
-    for j=1:Nr
-        
-        % square of convergence rate
-        r2 = rhos(j)^2;
-        
-        % solve the LMI
-        alpha = GD_LMI_alpha(r2,L,m); 
-            
-        % min and max stepsizes
-        alpha_min(i,j) = alpha.min;
-        alpha_max(i,j) = alpha.max;
-    end
+%     % GD LMI for each given rate
+%     for j=1:Nr
+%         
+%         % square of convergence rate
+%         r2 = rhos(j)^2;
+%         
+%         % solve the LMI
+%         alpha = GD_LMI_alpha(r2,L,m); 
+%             
+%         % min and max stepsizes
+%         alpha_min(i,j) = alpha.min;
+%         alpha_max(i,j) = alpha.max;
+%     end
+    
+    % Optimum parameters
+    rho_opt(i)   = (kappas(i)-1)/(kappas(i)+1);
+    alpha_opt(i) = 2/(L+m);
 
 end
 
@@ -56,9 +62,10 @@ hold on;
 for i=1:N
     legendstr{i} = ['$\kappa=' num2str(kappas(i)) '$'];
     ind = find(alpha_min(i,:)>0,1,'first');
-    mean_alpha = (alpha_min(i,ind:Nr)+alpha_max(i,ind:Nr))/2;
-    errbar = [alpha_max(i,ind:Nr)-alpha_min(i,ind:Nr);zeros(1,Nr-ind+1)];
-    shadedErrorBar(rhos(ind:Nr),alpha_min(i,ind:Nr),errbar,'lineprops',colors{i},'transparent',1);
+    lower_val = [alpha_opt(i), alpha_min(i,ind:Nr)];
+    upper_val = [alpha_opt(i), alpha_max(i,ind:Nr)];
+    errbar = [upper_val-lower_val; zeros(1,Nr-ind+2)];
+    shadedErrorBar([rho_opt(i),rhos(ind:Nr)],lower_val,errbar,'lineprops',colors{i},'transparent',1);
 end
 xlim([0 1])
 grid on

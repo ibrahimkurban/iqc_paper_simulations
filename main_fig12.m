@@ -53,7 +53,8 @@ end
 legendstr{Nd+1}  = 'Standard Nesterov (quadratics)';
 
 figure;
-semilogx(kappas, r', 'linewidth', 2); hold on;
+semilogx(kappas, r(:,1:Nd)', 'linewidth', 2); hold on;
+semilogx(kappas, r(:,Nd+1)', 'k-.', 'linewidth', 2);
 semilogx(kappas, ones(size(kappas)), 'k--', 'linewidth', 1);
 ylim([0 1.2])
 grid on
