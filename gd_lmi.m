@@ -11,7 +11,7 @@ function LMI = gd_lmi(rho2, alpha, L, m, lam)
 %
 %   LMI = gd_lmi(rho2, alpha, L, m, lam)
 %
-LMI = [-2*m*L*lambda - rho2, (L+m)*lam, 1;
-       (L+m)*lam,            -2*lam,    -alpha;
-       1,                    -alpha,    -1];
+LMI = [-2*m*L*lam - rho2, (L+m)*lam, 1     ;
+       (L+m)*lam        , -2*lam   , -alpha;
+       1                , -alpha   , -1    ];
 end
