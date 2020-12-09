@@ -1,5 +1,5 @@
 # iqc_paper_simulations
-MATLAB code for Analysis and Design of Optimization Algorithms via IQCs written by L. Lessard, B. Recht, A. Packard
+MATLAB code for the paper *Analysis and Design of Optimization Algorithms via Integral Quadratic Constraints* written by L. Lessard, B. Recht, A. Packard. https://doi.org/10.1137/15M1009597
 
 ### Folder Organization:
 ```
